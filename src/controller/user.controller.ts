@@ -1,51 +1,73 @@
-import { AppDataSource } from '../data-source';
 import { NextFunction, Request, Response } from 'express';
-import { User } from '../entity/User';
-import * as Boom from '@hapi/boom';
+import { UserService } from '../services/user.services';
 
-export class UserController {
-  private userRepository = AppDataSource.getRepository(User);
+const userService = new UserService();
 
-  async all(request: Request, response: Response, next: NextFunction) {
-    return this.userRepository.find();
+export const getUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const users = await userService.findAll();
+  res.status(200).json(users);
+};
+
+export const getOneUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.findOne(id);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
   }
+};
 
-  async one(request: Request, response: Response, next: NextFunction) {
-    const id = parseInt(request.params.id);
-
-    const user = await this.userRepository.findOne({
-      where: { id },
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const data = req.body;
+    const user = await userService.create(data);
+    return res.status(201).json({
+      message: 'Created user',
+      user,
     });
-
-    if (!user) {
-      return 'unregistered user';
-    }
-    return user;
+  } catch (error) {
+    next(error);
   }
+};
 
-  async save(request: Request, response: Response, next: NextFunction) {
-    const { firstName, lastName, age } = request.body;
-
-    const user = Object.assign(new User(), {
-      firstName,
-      lastName,
-      age,
-    });
-
-    return this.userRepository.save(user);
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const changes = req.body;
+    const changedUser = await userService.update(changes, id);
+    return res.json({ message: 'updated user', changerUSer: changedUser });
+  } catch (error) {
+    next(error);
   }
+};
 
-  async remove(request: Request, response: Response, next: NextFunction) {
-    const id = parseInt(request.params.id);
-
-    let userToRemove = await this.userRepository.findOneBy({ id });
-
-    if (!userToRemove) {
-      return Boom.notFound('user not found');
-    }
-
-    await this.userRepository.remove(userToRemove);
-
-    return { message: 'user has been removed' };
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    const deletedUser = await userService.delete(id);
+    return res.json({ message: 'deleted user', deletedUser });
+  } catch (error) {
+    next(error);
   }
-}
+};

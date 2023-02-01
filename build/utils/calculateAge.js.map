@@ -1,0 +1,1 @@
+{"version":3,"file":"calculateAge.js","sourceRoot":"","sources":["../../src/utils/calculateAge.ts"],"names":[],"mappings":";;;AAAA,SAAgB,YAAY,CAAC,QAAc;IACzC,MAAM,OAAO,GAAG,IAAI,CAAC,GAAG,EAAE,GAAG,QAAQ,CAAC,OAAO,EAAE,CAAC;IAChD,MAAM,MAAM,GAAG,IAAI,IAAI,CAAC,OAAO,CAAC,CAAC;IAEjC,OAAO,IAAI,CAAC,GAAG,CAAC,MAAM,CAAC,cAAc,EAAE,GAAG,IAAI,CAAC,CAAC;AAClD,CAAC;AALD,oCAKC"}

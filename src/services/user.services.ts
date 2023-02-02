@@ -1,21 +1,21 @@
-import * as boom from '@hapi/boom';
-import * as bcrypt from 'bcrypt';
-import { AppDataSource } from '../db/data-source';
-import { User } from '../entities/User';
-import { calculateAge } from '../utils/calculateAge';
+import * as boom from "@hapi/boom";
+import * as bcrypt from "bcrypt";
+import { AppDataSource } from "../db/data-source";
+import { User } from "../entities/User.entity";
+import { calculateAge } from "../utils/calculateAge";
 
 export class UserService {
-  constructor() {}
   private userRepository = AppDataSource.getRepository(User);
 
   async findAll(): Promise<Array<User>> {
     const users: Array<User> = await this.userRepository.find();
+    users.map((user: User) => delete user.password);
     return users;
   }
 
   async findOne(id): Promise<User> {
     const user = await this.userRepository.findOneBy({ id });
-    if (!user) throw boom.notFound('user not found');
+    if (!user) throw boom.notFound("user not found");
     delete user.password;
     return user;
   }

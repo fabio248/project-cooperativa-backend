@@ -1,5 +1,5 @@
-import { Response, Request, NextFunction } from 'express';
-import { QueryFailedError } from 'typeorm';
+import { Response, Request, NextFunction } from "express";
+import { QueryFailedError } from "typeorm";
 
 export function boomErrorHandler(
   err,
@@ -25,6 +25,7 @@ export function ormErrorHandler(
     message: err.driverError.detail,
     stack: err.stack,
   });
+  next();
 }
 
 export function errorHandler(
@@ -34,4 +35,5 @@ export function errorHandler(
   next: NextFunction
 ) {
   res.status(err.statusCode || 500).json({ message: err });
+  next();
 }

@@ -5,6 +5,7 @@
 
     const login = (req, res, next) => {
         try{
+            
             const user = req.user;
             res.json(service.signToken(user))
         }catch(error){

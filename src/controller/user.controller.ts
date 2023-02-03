@@ -3,6 +3,9 @@ import { UserService } from "../services/user.services";
 
 const userService = new UserService();
 
+
+
+
 export const getUsers = async (req: Request, res: Response) => {
   const users = await userService.findAll();
   res.status(200).json(users);

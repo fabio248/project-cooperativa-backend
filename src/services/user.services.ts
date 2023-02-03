@@ -50,7 +50,9 @@ export class UserService {
 
   //buscando un elemento de usuario por su email
   async findByEmail(email){
-    const emailSearch = await this.userRepository.findOneBy(email)
+    const emailSearch = await this.userRepository.findOne({
+      where: {email},
+    })
     return emailSearch
   }
   

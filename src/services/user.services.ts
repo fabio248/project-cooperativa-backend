@@ -47,4 +47,11 @@ export class UserService {
     await this.userRepository.remove(user);
     return user;
   }
+
+  //buscando un elemento de usuario por su email
+  async findByEmail(email){
+    const emailSearch = await this.userRepository.findOneBy(email)
+    return emailSearch
+  }
+  
 }

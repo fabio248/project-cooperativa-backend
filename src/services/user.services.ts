@@ -47,4 +47,11 @@ export class UserService {
     await this.userRepository.remove(user);
     return user;
   }
+
+  async findByEmail(email){
+    const emailSearch = await this.userRepository.findOne({
+      where: {email},
+    })
+    return emailSearch
+  }
 }

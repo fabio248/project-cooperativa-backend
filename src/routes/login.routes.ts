@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import passport from 'passport';
+import * as passport from 'passport';
 import {
     login,
     recovery
@@ -9,8 +9,10 @@ export const routerlogin = Router();
 
 routerlogin.post(
     '/login',
-    passport.authenticate('local', { session: false }),
+     passport.authenticate('local', { session: false }),
     login
 );
 routerlogin.post('/recovery', recovery)
+
+
 export default routerlogin

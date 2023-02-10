@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   createUser,
   deleteUser,
+  getEmail,
   getOneUser,
   getUsers,
   updateUser,
@@ -17,6 +18,7 @@ export const userRouter = Router();
 
 userRouter.get("/", getUsers);
 userRouter.get("/:id", validatorHandler(getUserSchema, "params"), getOneUser);
+// userRouter.get("/:email", validatorHandler(getUserSchema, "params"), getEmail);
 userRouter.post("/", validatorHandler(createUserSchema, "body"), createUser);
 userRouter.put(
   "/:id",

@@ -70,3 +70,22 @@ export const deleteUser = async (
     next(error);
   }
 };
+
+
+
+//prueba no tocar
+
+// recordar probar hacer una busqueda por ID Pero validando el email
+export const getEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { email } = req.body.email;
+    const user = await userService.findOneEmail(email);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};

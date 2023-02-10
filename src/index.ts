@@ -3,6 +3,7 @@ import * as bodyParser from "body-parser";
 import * as morgan from "morgan";
 import { Application } from "express";
 import { AppDataSource } from "./db/data-source";
+import { routerAuth } from "./routes/auth.routes";
 
 import {
   boomErrorHandler,
@@ -26,7 +27,7 @@ AppDataSource.initialize()
     app.use(boomErrorHandler);
     app.use(ormErrorHandler);
     app.use(errorHandler);
-
+    app.use(routerAuth);
     // start express server
     app.listen(config.port);
 

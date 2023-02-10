@@ -1,12 +1,12 @@
 import * as boom from "@hapi/boom";
 import * as bcrypt from "bcrypt";
+import { userInfo } from "os";
 import { AppDataSource } from "../db/data-source";
 import { User } from "../entities/User.entity";
 import { calculateAge } from "../utils/calculateAge";
-
+import { Equal } from "typeorm";
 export class UserService {
   private userRepository = AppDataSource.getRepository(User);
-
   async findAll(): Promise<Array<User>> {
     const users: Array<User> = await this.userRepository.find();
     users.map((user: User) => delete user.password);
@@ -48,10 +48,14 @@ export class UserService {
     return user;
   }
 
-  async findByEmail(email){
-    const emailSearch = await this.userRepository.findOne({
-      where: {email},
-    })
-    return emailSearch
+
+  async findOneEmail(email): Promise<User>{
+    const userData = await this.userRepository.findOneBy({ email })
+    try {
+      if (email === userData.email) throw boom.badRequest("User don't exists");
+    } catch (error) {
+     console.log(error) 
+    }
+    return userData;
   }
 }

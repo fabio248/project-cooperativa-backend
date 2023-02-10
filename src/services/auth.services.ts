@@ -1,27 +1,41 @@
-import * as boom from "@hapi/boom"; //para el manejo de errores se usa el boom
-import * as bcrypt from "bcrypt"; //para proceder a incryptar la contraseña
-import config from "../config/config";
-import jwt from "jsonwebtoken"; //para poder generar el token de los usuarios
-import { UserService } from "./user.services"; //se define una instancia de la clase userService para obtener datos
+import * as boom from "@hapi/boom";
+import * as bcrypt from "bcrypt";
+import { User } from "../entities/User.entity";
+import { AppDataSource } from "../db/data-source";
+import { UserService } from "./user.services";
+import * as jwt from "jsonwebtoken";
+import config from '../config/config';
+
+
+const service = new UserService();
 
 export class AuthService {
-  // los miembros de una clase no necesita la palabra rervada "CONST"
-  ObtainDataUser = new UserService();
-  async getUser(email, password) {
-    const user = await this.ObtainDataUser.findByEmail(email);
-    if (!user) throw boom.unauthorized();
-    const Match: string = await bcrypt.compare(password, user.password);
-    if (!Match) throw boom.unauthorized();
-    delete user.password;
-    return user;
-  }
+   private userRepository = AppDataSource.getRepository(User);
 
-  signToken(user) {
-    const payload = {
-      sub: user.id,
-      role: user.role,
-    };
-    const token = jwt.sign(payload, config.secretJwt);
-    return { user, token };
-  }
+   async comparePassword(email, password): Promise<User>{
+      const user = await service.findOneEmail(email)
+      try{
+        
+         if (!user) throw boom.unauthorized();
+         const isMatch = await bcrypt.compare(password, user.password);
+         if (!isMatch) throw boom.unauthorized();
+
+         console.log(isMatch)
+         console.log(user)
+      }catch (error){
+         console.log(error)
+      }
+      return user;
+   }
+
+   signToken(email){
+      const datos={
+         sub: email.id,
+      };
+      const token = jwt.sign(datos, config.secretJwt);
+      return { token }
+   }
+
+
+   
 }

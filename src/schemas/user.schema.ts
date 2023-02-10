@@ -1,5 +1,6 @@
 import * as Joi from 'joi';
 
+
 const id = Joi.number();
 const firstName = Joi.string().min(3);
 const lastName = Joi.string().min(3);
@@ -29,3 +30,5 @@ export const updateUserSchema = Joi.object({
   password,
   age,
 });
+
+

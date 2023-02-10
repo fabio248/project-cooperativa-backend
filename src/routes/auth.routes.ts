@@ -1,12 +1,10 @@
 import { Router } from "express";
 import * as passport from "passport";
-import { login, recovery } from "../controller/login.controller";
+import { 
+    signIn, signup 
+} from "../controller/auth.controller"; // se esta instanciando las rutas de las nuevas acciones de Authenticate
 
 export const routerAuth = Router();
 
-routerAuth.post(
-  "/login",
-  passport.authenticate("local", { session: false }),
-  login
-);
-routerAuth.post("/recovery", recovery);
+routerAuth.post('/login', signup)
+routerAuth.post('/signin', signIn)

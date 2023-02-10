@@ -30,6 +30,7 @@ export class User {
   @Column()
   birthday: Date;
 
+
   @OneToOne(() => Partner, (partner: Partner) => partner.user)
   @JoinColumn()
   partner: Partner;

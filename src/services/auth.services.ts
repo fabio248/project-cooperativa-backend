@@ -23,9 +23,9 @@ export class AuthService {
          console.log(isMatch)
          console.log(user)
       }catch (error){
-         console.log(error)
+        throw boom.badRequest('User Dont Exists');
       }
-      return user;
+      return user
    }
 
    signToken(email){

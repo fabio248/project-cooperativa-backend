@@ -19,13 +19,12 @@ export class AuthService {
          if (!user) throw boom.unauthorized();
          const isMatch = await bcrypt.compare(password, user.password);
          if (!isMatch) throw boom.unauthorized();
-
          console.log(isMatch)
          console.log(user)
       }catch (error){
-        throw boom.badRequest('User Dont Exists');
+        throw boom.unauthorized("This User Don't Unauthorized");
       }
-      return user
+       return user
    }
 
    signToken(email){
